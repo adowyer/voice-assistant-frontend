@@ -4,6 +4,7 @@ import { CloseIcon } from "@/components/CloseIcon";
 import { NoAgentNotification } from "@/components/NoAgentNotification";
 import TranscriptionView from "@/components/TranscriptionView";
 import {
+  VoiceAssistantProvider,
   BarVisualizer,
   DisconnectButton,
   RoomAudioRenderer,
@@ -51,12 +52,22 @@ export default function Page() {
 
   return (
     <main data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
-      <RoomContext.Provider value={room}>
-        <div className="lk-room-container max-w-[1024px] w-[90vw] mx-auto max-h-[90vh]">
-          <SimpleVoiceAssistant onConnectButtonClicked={onConnectButtonClicked} />
-        </div>
-      </RoomContext.Provider>
-    </main>
+     {}
+     <VoiceAssistantProvider
+       room={room}
+       wsUrl={process.env.NEXT_PUBLIC_LIVEKIT_WS_URL!}
+       signalUrl={process.env.NEXT_PUBLIC_LIVEKIT_SIGNAL_URL!}
+       apiKey={process.env.NEXT_PUBLIC_LIVEKIT_API_KEY!}
+       apiSecret={process.env.NEXT_PUBLIC_LIVEKIT_API_SECRET!}
+       roomName={process.env.NEXT_PUBLIC_ROOM!}
+       participantIdentity={process.env.NEXT_PUBLIC_AGENT_ID!}
+       turnDetection="stt"    // or "vad" depending on your backend env
+     >
+       <div className="lk-room-container …">
+         <SimpleVoiceAssistant onConnectButtonClicked={onConnectButtonClicked} />
+       </div>
+     </VoiceAssistantProvider>
+   </main>
   );
 }
 
